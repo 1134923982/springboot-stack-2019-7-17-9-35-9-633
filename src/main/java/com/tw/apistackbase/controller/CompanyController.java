@@ -33,7 +33,7 @@ public class CompanyController {
     }
 
     @GetMapping("/companies/{id}")
-    public ResponseEntity getCompanies(@PathVariable long id) {
+    public ResponseEntity getCompany(@PathVariable long id) {
         Company company = companyRespository.getCompanies().stream()
                 .filter(element -> element.getId() == id)
                 .findFirst().orElse(null);
