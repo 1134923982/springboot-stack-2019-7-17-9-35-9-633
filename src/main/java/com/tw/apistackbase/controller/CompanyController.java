@@ -58,4 +58,15 @@ public class CompanyController {
         return ResponseEntity.notFound().build();
     }
 
+    @PostMapping("/companies")
+    public ResponseEntity addCompany(@RequestBody Company company) {
+        long maxId=companyRespository.getCompanies().stream().mapToLong(Company::getId).max().getAsLong();
+        Company newCompany = new Company();
+        newCompany.setCompanyNumber(company.getCompanyNumber());
+        newCompany.setEmployees(company.getEmployees());
+        newCompany.setId(maxId+1);
+        companyRespository.add(newCompany);
+        return ResponseEntity.ok(newCompany);
+    }
+
 }

@@ -8,6 +8,9 @@ public class Company {
     private String companyNumber;
     private List<Employee> employees= new ArrayList<>();
 
+    public Company() {
+    }
+
     public Company(long id, String companyNumber, List<Employee> employees) {
         this.id = id;
         this.companyNumber = companyNumber;

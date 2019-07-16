@@ -10,13 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -212,5 +214,33 @@ public class CompanyControllerTest {
                         "        ]\n" +
                         "    }\n" +
                         "]"));
+    }
+
+    @Test
+    public void should_return_new_company_when_request_add_company_api() throws Exception {
+        mockCompanyRespository = Mockito.mock(CompanyRespository.class);
+        List<Company> mockList = new ArrayList<>();
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(1,"male","hali",20000,28));
+        employees.add(new Employee(2,"female","sherry",10000,23));
+        mockList.add(new Company(1,"alibaba",employees));
+        Mockito.when(mockCompanyRespository.getCompanies()).thenReturn(mockList);
+
+        mockMvc.perform(post("/companies").contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content("{\n" +
+                        "        \"companyNumber\": \"arraba\",\n" +
+                        "        \"employees\": [\n" +
+                        "            \n" +
+                        "        ]\n" +
+                        "}"))
+
+
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json("{\n" +
+                        "    \"id\": 3,\n" +
+                        "    \"companyNumber\": \"arraba\",\n" +
+                        "    \"employees\": []\n" +
+                        "}"));
     }
 }
