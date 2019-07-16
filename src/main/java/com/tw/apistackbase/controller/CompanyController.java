@@ -43,4 +43,15 @@ public class CompanyController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/companies/{id}/employees")
+    public ResponseEntity getEmployeesByCompanyId(@PathVariable long id) {
+        Company company = companyRespository.getCompanies().stream()
+                .filter(element -> element.getId() == id)
+                .findFirst().orElse(null);
+        if (company != null) {
+            return ResponseEntity.ok(company.getEmployees());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 }

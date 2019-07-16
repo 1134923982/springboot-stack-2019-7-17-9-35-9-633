@@ -125,4 +125,35 @@ public class CompanyControllerTest {
                         "    ]\n" +
                         "}"));
     }
+
+    @Test
+    public void should_return_employees_by_company_id_when_request_company_id_employees_api() throws Exception {
+        mockCompanyRespository = Mockito.mock(CompanyRespository.class);
+        List<Company> mockList = new ArrayList<>();
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(1,"male","hali",20000,28));
+        employees.add(new Employee(2,"female","sherry",10000,23));
+        mockList.add(new Company(1,"alibaba",employees));
+        Mockito.when(mockCompanyRespository.getCompanies()).thenReturn(mockList);
+
+        mockMvc.perform(get("/companies/1/employees"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json("[\n" +
+                        "    {\n" +
+                        "        \"id\": 1,\n" +
+                        "        \"gender\": \"male\",\n" +
+                        "        \"name\": \"hali\",\n" +
+                        "        \"salary\": 20000,\n" +
+                        "        \"age\": 28\n" +
+                        "    },\n" +
+                        "    {\n" +
+                        "        \"id\": 2,\n" +
+                        "        \"gender\": \"female\",\n" +
+                        "        \"name\": \"sherry\",\n" +
+                        "        \"salary\": 10000,\n" +
+                        "        \"age\": 23\n" +
+                        "    }\n" +
+                        "]"));
+    }
 }
