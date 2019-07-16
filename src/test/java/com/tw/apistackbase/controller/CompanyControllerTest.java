@@ -167,6 +167,7 @@ public class CompanyControllerTest {
         employees.add(new Employee(1,"male","hali",20000,28));
         employees.add(new Employee(2,"female","sherry",10000,23));
         mockList.add(new Company(1,"alibaba",employees));
+        mockList.add(new Company(2,"huawei",employees));
         Mockito.when(mockCompanyRespository.getCompanies()).thenReturn(mockList);
 
         mockMvc.perform(get("/companies?page=1&pageSize=3"))

@@ -32,7 +32,7 @@ public class CompanyController {
 
         if(page*pageSize>companyRespository.getCompanies().size())
             pageSize = companyRespository.getCompanies().size();
-        return ResponseEntity.ok(companyRespository.getCompanies().subList((page*pageSize - 1), pageSize));
+        return ResponseEntity.ok(companyRespository.getCompanies().subList(((page-1)*pageSize), pageSize));
 
     }
 
