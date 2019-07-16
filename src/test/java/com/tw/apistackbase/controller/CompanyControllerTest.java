@@ -156,4 +156,61 @@ public class CompanyControllerTest {
                         "    }\n" +
                         "]"));
     }
+
+    @Test
+    public void should_return_employees_by_page_when_request_page_and_page_size_api() throws Exception {
+        mockCompanyRespository = Mockito.mock(CompanyRespository.class);
+        List<Company> mockList = new ArrayList<>();
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(1,"male","hali",20000,28));
+        employees.add(new Employee(2,"female","sherry",10000,23));
+        mockList.add(new Company(1,"alibaba",employees));
+        Mockito.when(mockCompanyRespository.getCompanies()).thenReturn(mockList);
+
+        mockMvc.perform(get("/companies?page=1&pageSize=3"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json("[\n" +
+                        "    {\n" +
+                        "        \"id\": 1,\n" +
+                        "        \"companyNumber\": \"alibaba\",\n" +
+                        "        \"employees\": [\n" +
+                        "            {\n" +
+                        "                \"id\": 1,\n" +
+                        "                \"gender\": \"male\",\n" +
+                        "                \"name\": \"hali\",\n" +
+                        "                \"salary\": 20000,\n" +
+                        "                \"age\": 28\n" +
+                        "            },\n" +
+                        "            {\n" +
+                        "                \"id\": 2,\n" +
+                        "                \"gender\": \"female\",\n" +
+                        "                \"name\": \"sherry\",\n" +
+                        "                \"salary\": 10000,\n" +
+                        "                \"age\": 23\n" +
+                        "            }\n" +
+                        "        ]\n" +
+                        "    },\n" +
+                        "    {\n" +
+                        "        \"id\": 2,\n" +
+                        "        \"companyNumber\": \"huawei\",\n" +
+                        "        \"employees\": [\n" +
+                        "            {\n" +
+                        "                \"id\": 1,\n" +
+                        "                \"gender\": \"male\",\n" +
+                        "                \"name\": \"hali\",\n" +
+                        "                \"salary\": 20000,\n" +
+                        "                \"age\": 28\n" +
+                        "            },\n" +
+                        "            {\n" +
+                        "                \"id\": 2,\n" +
+                        "                \"gender\": \"female\",\n" +
+                        "                \"name\": \"sherry\",\n" +
+                        "                \"salary\": 10000,\n" +
+                        "                \"age\": 23\n" +
+                        "            }\n" +
+                        "        ]\n" +
+                        "    }\n" +
+                        "]"));
+    }
 }

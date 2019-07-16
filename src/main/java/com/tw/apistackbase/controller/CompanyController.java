@@ -6,9 +6,7 @@ import com.tw.apistackbase.entity.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +26,14 @@ public class CompanyController {
     }
 
     @GetMapping("/companies")
-    public ResponseEntity getCompanies() {
-        return ResponseEntity.ok(companyRespository.getCompanies());
+    public ResponseEntity getCompanies(@RequestParam(defaultValue = "0") int page , @RequestParam(defaultValue = "0") Integer pageSize) {
+        if (pageSize == 0 || page == 0)
+            return ResponseEntity.ok(companyRespository.getCompanies());
+
+        if(page*pageSize>companyRespository.getCompanies().size())
+            pageSize = companyRespository.getCompanies().size();
+        return ResponseEntity.ok(companyRespository.getCompanies().subList((page*pageSize - 1), pageSize));
+
     }
 
     @GetMapping("/companies/{id}")
