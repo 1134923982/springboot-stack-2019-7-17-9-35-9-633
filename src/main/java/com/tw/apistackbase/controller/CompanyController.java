@@ -3,9 +3,7 @@ package com.tw.apistackbase.controller;
 import com.tw.apistackbase.entity.Company;
 import com.tw.apistackbase.entity.CompanyRespository;
 import com.tw.apistackbase.entity.Employee;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -62,11 +60,25 @@ public class CompanyController {
     public ResponseEntity addCompany(@RequestBody Company company) {
         long maxId=companyRespository.getCompanies().stream().mapToLong(Company::getId).max().getAsLong();
         Company newCompany = new Company();
-        newCompany.setCompanyNumber(company.getCompanyNumber());
+        newCompany.setCompanyName(company.getCompanyName());
         newCompany.setEmployees(company.getEmployees());
         newCompany.setId(maxId+1);
         companyRespository.add(newCompany);
         return ResponseEntity.ok(newCompany);
+    }
+
+    @PutMapping("/companies/{id}")
+    public ResponseEntity updateCompany(@PathVariable long id,@RequestBody Company company) {
+        Company updateCompany = companyRespository.getCompanies().stream()
+                .filter(element->element.getId()==id)
+                .findFirst()
+                .orElse(null);
+        if(updateCompany!=null){
+            updateCompany.setEmployees(company.getEmployees());
+            updateCompany.setCompanyName(company.getCompanyName());
+            return ResponseEntity.ok(updateCompany);
+        }
+        return ResponseEntity.notFound().build();
     }
 
 }

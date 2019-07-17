@@ -244,4 +244,32 @@ public class CompanyControllerTest {
                         "    \"employees\": []\n" +
                         "}"));
     }
+
+    @Test
+    public void should_return_update_company_when_request_update_company_api() throws Exception {
+        mockCompanyRespository = Mockito.mock(CompanyRespository.class);
+        List<Company> mockList = new ArrayList<>();
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(1,"male","hali",20000,28));
+        employees.add(new Employee(2,"female","sherry",10000,23));
+        mockList.add(new Company(1,"alibaba",employees));
+        Mockito.when(mockCompanyRespository.getCompanies()).thenReturn(mockList);
+
+        mockMvc.perform(put("/companies/1").contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content("{\n" +
+                        "        \"companyName\": \"arraba\",\n" +
+                        "        \"employees\": [\n" +
+                        "            \n" +
+                        "        ]\n" +
+                        "}"))
+
+
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json("{\n" +
+                        "    \"id\": 1,\n" +
+                        "    \"companyName\": \"arraba\",\n" +
+                        "    \"employees\": []\n" +
+                        "}"));
+    }
 }
