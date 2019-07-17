@@ -1,6 +1,11 @@
 package com.tw.apistackbase.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Employee {
+    @Id
     private long id;
     private String gender;
     private String name;

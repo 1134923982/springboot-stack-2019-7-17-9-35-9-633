@@ -1,11 +1,17 @@
 package com.tw.apistackbase.entity;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
+@Entity
 public class Company {
+    @Id
+    @GeneratedValue
+    @Column(name = "id",unique = true,nullable = false,insertable = true,updatable = false,length = 20)
     private long id;
     private String companyName;
+    //忽略表中数据
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Employee> employees= new ArrayList<>();
 
     public Company() {
