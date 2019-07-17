@@ -7,3 +7,21 @@ logging:
         springframework:
           web: DEBUG
         hibernate: ERROR
+
+server:
+  port: 8089
+
+spring:
+  datasource:
+    url: jdbc:h2:file:./h2/testDb
+    platform: h2
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+
+  jpa:
+    hibernate:
+      ddl-auto: update
