@@ -86,5 +86,47 @@ public class EmployeeControllerTest {
                         "}"));
     }
 
+    @Test
+    public void should_return_employeeS_when_request_employees_by_page_api() throws Exception {
+        List<Employee> mockList = new ArrayList<>();
+        mockList.add(new Employee(1,"male","hali",20000,28));
+        mockList.add(new Employee(2,"female","sherry",10000,23));
+        Mockito.when(mockEmployeeRespository.getEmployees()).thenReturn(mockList);
+
+        mockMvc.perform(get("/employees?page=2&pageSize=1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json("[\n" +
+                        "    {\n" +
+                        "        \"id\": 2,\n" +
+                        "        \"gender\": \"female\",\n" +
+                        "        \"name\": \"sherry\",\n" +
+                        "        \"salary\": 10000,\n" +
+                        "        \"age\": 23\n" +
+                        "    }\n" +
+                        "]"));
+    }
+
+    @Test
+    public void should_return_employeeS_when_request_employees_by_gender_api() throws Exception {
+        List<Employee> mockList = new ArrayList<>();
+        mockList.add(new Employee(1,"male","hali",20000,28));
+        mockList.add(new Employee(2,"female","sherry",10000,23));
+        Mockito.when(mockEmployeeRespository.getEmployees()).thenReturn(mockList);
+
+        mockMvc.perform(get("/employees?gender=male"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json("[\n" +
+                        "    {\n" +
+                        "        \"id\": 1,\n" +
+                        "        \"gender\": \"male\",\n" +
+                        "        \"name\": \"hali\",\n" +
+                        "        \"salary\": 20000,\n" +
+                        "        \"age\": 28\n" +
+                        "    }\n" +
+                        "]"));
+    }
+
 
 }

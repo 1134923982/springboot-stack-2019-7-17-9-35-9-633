@@ -22,9 +22,16 @@ public class EmployeeController {
 //    }
 //
     @GetMapping("/employees")
-    public ResponseEntity getEmployees(@RequestParam(defaultValue = "0") int page , @RequestParam(defaultValue = "0") int pageSize){
+    public ResponseEntity getEmployees(@RequestParam(defaultValue = "0") int page , @RequestParam(defaultValue = "0") int pageSize, @RequestParam(defaultValue = "") String gender){
+        if(!gender.equals("")){
+            return ResponseEntity.ok(employeeRespository.getEmployees().stream().filter(element->element.getGender().equals(gender)));
+        }
+        if ((pageSize == 0 || page == 0))
+            return ResponseEntity.ok(employeeRespository.getEmployees());
 
-        return ResponseEntity.ok(employeeRespository.getEmployees());
+        if(page*pageSize>employeeRespository.getEmployees().size())
+            pageSize = employeeRespository.getEmployees().size();
+        return ResponseEntity.ok(employeeRespository.getEmployees().subList(((page-1)*pageSize), page*pageSize));
     }
 
     @GetMapping("/employees/{id}")
