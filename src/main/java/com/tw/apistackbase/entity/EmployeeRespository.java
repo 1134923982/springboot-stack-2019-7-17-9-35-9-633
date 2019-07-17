@@ -17,6 +17,10 @@ public class EmployeeRespository {
         this.employees.add(employee);
     }
 
+    public void delete(Employee employee){
+        this.employees.remove(employee);
+    }
+
     public List<Employee> getEmployees() {
         return employees;
     }

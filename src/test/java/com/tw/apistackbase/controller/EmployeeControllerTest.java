@@ -180,5 +180,24 @@ public class EmployeeControllerTest {
                         "}"));
     }
 
+    @Test
+    public void should_return_deleted_company_when_request_delete_a_company_by_id_api() throws Exception {
+        List<Employee> mockList = new ArrayList<>();
+        mockList.add(new Employee(1,"male","hali",20000,28));
+        mockList.add(new Employee(2,"female","sherry",10000,23));
+        Mockito.when(mockEmployeeRespository.getEmployees()).thenReturn(mockList);
+
+        mockMvc.perform(delete("/employees/1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json("{\n" +
+                        "    \"id\": 1,\n" +
+                        "    \"gender\": \"male\",\n" +
+                        "    \"name\": \"hali\",\n" +
+                        "    \"salary\": 20000,\n" +
+                        "    \"age\": 28\n" +
+                        "}"));
+    }
+
 
 }

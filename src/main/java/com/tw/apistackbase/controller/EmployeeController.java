@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class EmployeeController {
     @Autowired
@@ -63,6 +65,20 @@ public class EmployeeController {
             updateEmployee.setName(employee.getName());
             updateEmployee.setSalary(employee.getSalary());
             return ResponseEntity.ok(updateEmployee);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/employees/{id}")
+    public ResponseEntity deleteEmployee(@PathVariable long id) {
+        Employee employee = employeeRespository.getEmployees().stream()
+                .filter(element->element.getId()==id)
+                .findFirst()
+                .orElse(null);
+        if(employee!=null){
+            employeeRespository.delete(employee);
+            List<Employee> employees = employeeRespository.getEmployees();
+            return ResponseEntity.ok(employee);
         }
         return ResponseEntity.notFound().build();
     }
