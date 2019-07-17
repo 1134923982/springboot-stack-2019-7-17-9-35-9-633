@@ -1,5 +1,6 @@
 package com.tw.apistackbase.controller;
 
+import com.tw.apistackbase.entity.Company;
 import com.tw.apistackbase.entity.Employee;
 import com.tw.apistackbase.entity.EmployeeRespository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,11 +44,27 @@ public class EmployeeController {
     }
 
     @PostMapping("/employees")
-    public ResponseEntity addCompany(@RequestBody Employee employee) {
+    public ResponseEntity addEmployee(@RequestBody Employee employee) {
         long maxId=employeeRespository.getEmployees().stream().mapToLong(Employee::getId).max().getAsLong();
         employee.setId(maxId+1);
         employeeRespository.add(employee);
         return ResponseEntity.ok(employee);
+    }
+
+    @PutMapping("/employees/{id}")
+    public ResponseEntity updateEmployee(@PathVariable long id,@RequestBody Employee employee) {
+        Employee updateEmployee = employeeRespository.getEmployees().stream()
+                .filter(element->element.getId()==id)
+                .findFirst()
+                .orElse(null);
+        if(updateEmployee!=null){
+            updateEmployee.setAge(employee.getAge());
+            updateEmployee.setGender(employee.getGender());
+            updateEmployee.setName(employee.getName());
+            updateEmployee.setSalary(employee.getSalary());
+            return ResponseEntity.ok(updateEmployee);
+        }
+        return ResponseEntity.notFound().build();
     }
 
 }

@@ -154,5 +154,31 @@ public class EmployeeControllerTest {
                         "}"));
     }
 
+    @Test
+    public void should_return_updated_company_when_request_update_a_company_api() throws Exception {
+        List<Employee> mockList = new ArrayList<>();
+        mockList.add(new Employee(1,"male","hali",20000,28));
+        mockList.add(new Employee(2,"female","sherry",10000,23));
+        Mockito.when(mockEmployeeRespository.getEmployees()).thenReturn(mockList);
+
+        mockMvc.perform(put("/employees/1").contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content("{\n" +
+                        "        \"gender\": \"male\",\n" +
+                        "        \"name\": \"halibote\",\n" +
+                        "        \"salary\": 10000,\n" +
+                        "        \"age\": 22\n" +
+                        "}"))
+
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json("{\n" +
+                        "    \"id\": 1,\n" +
+                        "    \"gender\": \"male\",\n" +
+                        "    \"name\": \"halibote\",\n" +
+                        "    \"salary\": 10000,\n" +
+                        "    \"age\": 22\n" +
+                        "}"));
+    }
+
 
 }
