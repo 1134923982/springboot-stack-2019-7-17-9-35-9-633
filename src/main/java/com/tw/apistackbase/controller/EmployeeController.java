@@ -4,10 +4,7 @@ import com.tw.apistackbase.entity.Employee;
 import com.tw.apistackbase.entity.EmployeeRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class EmployeeController {
@@ -43,6 +40,14 @@ public class EmployeeController {
             return ResponseEntity.ok(employee);
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/employees")
+    public ResponseEntity addCompany(@RequestBody Employee employee) {
+        long maxId=employeeRespository.getEmployees().stream().mapToLong(Employee::getId).max().getAsLong();
+        employee.setId(maxId+1);
+        employeeRespository.add(employee);
+        return ResponseEntity.ok(employee);
     }
 
 }
